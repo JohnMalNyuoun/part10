@@ -8,16 +8,18 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight + 10,
     paddingBottom: 15,
-    paddingHorizontal: 15,
     backgroundColor: theme.colors.appBarBackground || '#24292e',
+  },
+  scrollView: {
     flexDirection: 'row',
   },
   tab: {
-    marginRight: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
   },
   text: {
-    color: '#ffffff',
-    fontWeight: 'bold',
+    color: theme.colors.white || '#ffffff',
+    fontWeight: theme.fontWeights.bold,
     fontSize: 16,
   },
 });
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   return (
     <View style={styles.container}>
-      <ScrollView horizontal showHorizontalScrollIndicator={false}>
+      <ScrollView horizontal contentContainerStyle={styles.scrollView}>
         <Link to="/" style={styles.tab}>
           <Text style={styles.text}>Repositories</Text>
         </Link>
