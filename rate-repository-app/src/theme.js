@@ -5,6 +5,14 @@ const theme = {
     primary: '#0366d6',
     white: '#ffffff',
     mainBackground: '#e1e4e8',
+    appBarBackground: '#24292e',
+  },
+  fontSizes: {
+    body: 14,
+    subheading: 16,
+  },
+  fonts: {
+    main: 'System',
   },
   fontWeights: {
     normal: '400',
