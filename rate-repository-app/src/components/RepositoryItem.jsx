@@ -1,29 +1,30 @@
-import { View, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import RepositoryHeader from './RepositoryHeader';
+import RepositoryStats from './RepositoryStats';
+import theme from '../theme';
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: theme.colors.white,
+    padding: 15,
+  },
+});
 
 const RepositoryItem = ({ item }) => {
   return (
-    <View>
-      <Text>{item.fullName}</Text>
-      <Text>{item.description}</Text>
-      <Text>{item.language}</Text>
-      <View>
-        <View>
-          <Text>{item.stargazersCount}</Text>
-          <Text>Stars</Text>
-        </View>
-        <View>
-          <Text>{item.forksCount}</Text>
-          <Text>Forks</Text>
-        </View>
-        <View>
-          <Text>{item.reviewCount}</Text>
-          <Text>Reviews</Text>
-        </View>
-        <View>
-          <Text>{item.ratingAverage}</Text>
-          <Text>Rating</Text>
-        </View>
-      </View>
+    <View style={styles.container}>
+      <RepositoryHeader
+        fullName={item.fullName}
+        description={item.description}
+        language={item.language}
+        ownerAvatarUrl={item.ownerAvatarUrl}
+      />
+      <RepositoryStats
+        stargazersCount={item.stargazersCount}
+        forksCount={item.forksCount}
+        reviewCount={item.reviewCount}
+        ratingAverage={item.ratingAverage}
+      />
     </View>
   );
 };
