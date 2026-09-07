@@ -13,9 +13,11 @@
     "expo": "^57.0.0",
     "expo-constants": "~57.0.17",
     "expo-status-bar": "~57.0.1",
+    "formik": "^2.4.9",
     "react": "19.2.3",
     "react-native": "0.86.3",
-    "react-router-native": "^6.30.6"
+    "react-router-native": "^6.30.6",
+    "yup": "^1.7.1"
   },
   "private": true,
   "devDependencies": {
