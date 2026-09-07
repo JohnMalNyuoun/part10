@@ -12,10 +12,13 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
     backgroundColor: theme.colors.white,
   },
+  errorInput: {
+    borderColor: '#d73a4a',
+  },
 });
 
-const TextInput = ({ style, ...props }) => {
-  const inputStyle = [styles.input, style];
+const TextInput = ({ style, error, ...props }) => {
+  const inputStyle = [styles.input, style, error && styles.errorInput];
 
   return <NativeTextInput style={inputStyle} placeholderTextColor="#aab8c2" {...props} />;
 };

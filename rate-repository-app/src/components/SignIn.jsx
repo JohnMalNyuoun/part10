@@ -1,6 +1,7 @@
 import { View, Pressable, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
-import TextInput from './TextInput';
+import * as yup from 'yup';
+import FormikTextInput from './FormikTextInput';
 import Text from './Text';
 import theme from '../theme';
 
@@ -9,14 +10,12 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     padding: 15,
   },
-  input: {
-    marginBottom: 15,
-  },
   button: {
     backgroundColor: theme.colors.primary,
     borderRadius: 4,
     paddingVertical: 12,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     color: theme.colors.white,
@@ -29,25 +28,28 @@ const initialValues = {
   password: '',
 };
 
-const SignInForm = ({ onSubmit }) => {
+const validationSchema = yup.object().shape({
+  username: yup.string().required('Username is required'),
+  password: yup.string().required('Password is required'),
+});
+
+const SignInContainer = ({ onSubmit }) => {
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
-      {({ handleChange, handleBlur, handleSubmit, values }) => (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      validationSchema={validationSchema}
+    >
+      {({ handleSubmit }) => (
         <View style={styles.container}>
-          <TextInput
-            style={styles.input}
+          <FormikTextInput
+            name="username"
             placeholder="Username"
-            onChangeText={handleChange('username')}
-            onBlur={handleBlur('username')}
-            value={values.username}
             autoCapitalize="none"
           />
-          <TextInput
-            style={styles.input}
+          <FormikTextInput
+            name="password"
             placeholder="Password"
-            onChangeText={handleChange('password')}
-            onBlur={handleBlur('password')}
-            value={values.password}
             secureTextEntry
           />
           <Pressable style={styles.button} onPress={handleSubmit}>
@@ -64,7 +66,7 @@ const SignIn = () => {
     console.log(values);
   };
 
-  return <SignInForm onSubmit={onSubmit} />;
+  return <SignInContainer onSubmit={onSubmit} />;
 };
 
 export default SignIn;
