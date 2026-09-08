@@ -20,3 +20,11 @@ export const GET_REPOSITORIES = gql`
   }
 `;
 
+export const ME = gql`
+  query getCurrentUser {
+    me {
+      id
+      username
+    }
+  }
+`;
