@@ -1,9 +1,7 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 
-// Replace 'localhost' with your computer's local IP address (e.g. 'http://192.168.1.X:4000/graphql')
-// if you are testing on a physical mobile device using Expo Go.
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: process.env.EXPO_PUBLIC_APOLLO_URI,
 });
 
 const createApolloClient = () => {
