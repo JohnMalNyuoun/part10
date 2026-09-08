@@ -40,7 +40,7 @@ const validationSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 
-const SignInContainer = ({ onSubmit, error }) => {
+export const SignInContainer = ({ onSubmit, error }) => {
   return (
     <Formik
       initialValues={initialValues}
