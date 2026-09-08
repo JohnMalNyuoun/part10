@@ -1,25 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { NativeRouter } from 'react-router-native';
-import { ApolloProvider } from '@apollo/client/react';
+import { ApolloProvider } from '@apollo/client';
+
 import Main from './src/components/Main';
 import createApolloClient from './src/utils/apolloClient';
+import AuthStorage from './src/utils/authStorage';
+import AuthStorageContext from './src/contexts/AuthStorageContext';
 
-const apolloClient = createApolloClient();
+const authStorage = new AuthStorage();
+const apolloClient = createApolloClient(authStorage);
 
-export default function App() {
+const App = () => {
   return (
-    <>
-      <NativeRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
-        <ApolloProvider client={apolloClient}>
+    <NativeRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
+      <ApolloProvider client={apolloClient}>
+        <AuthStorageContext.Provider value={authStorage}>
           <Main />
-        </ApolloProvider>
-      </NativeRouter>
-      <StatusBar style="auto" />
-    </>
+        </AuthStorageContext.Provider>
+      </ApolloProvider>
+    </NativeRouter>
   );
-}
+};
+
+export default App;
