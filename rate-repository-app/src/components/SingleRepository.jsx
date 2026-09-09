@@ -16,15 +16,24 @@ const styles = StyleSheet.create({
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
+const REVIEWS_PAGE_SIZE = 5;
 
 const SingleRepository = () => {
   const { id } = useParams();
-  const { data, loading } = useQuery(GET_REPOSITORY, {
-    variables: { repositoryId: id },
+  const { data, error, loading, fetchMore } = useQuery(GET_REPOSITORY, {
+    variables: { repositoryId: id, first: REVIEWS_PAGE_SIZE },
     fetchPolicy: "cache-and-network",
   });
 
-  if (loading || !data) {
+  if (error) {
+    return (
+      <View style={{ padding: 20 }}>
+        <Text>{error.message}</Text>
+      </View>
+    );
+  }
+
+  if (!data) {
     return (
       <View style={{ padding: 20 }}>
         <Text>Loading...</Text>
@@ -43,6 +52,21 @@ const SingleRepository = () => {
   const reviews = repository.reviews
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];
+  const hasNextPage = repository.reviews?.pageInfo?.hasNextPage;
+
+  const loadMoreReviews = () => {
+    if (!hasNextPage || loading) {
+      return;
+    }
+
+    fetchMore({
+      variables: {
+        repositoryId: id,
+        first: REVIEWS_PAGE_SIZE,
+        after: repository.reviews.pageInfo.endCursor,
+      },
+    });
+  };
 
   return (
     <FlatList
@@ -50,6 +74,8 @@ const SingleRepository = () => {
       renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={loadMoreReviews}
+      onEndReachedThreshold={0.5}
       ListHeaderComponent={() => (
         <View>
           <RepositoryItem item={repository} showGitHubButton={true} />
