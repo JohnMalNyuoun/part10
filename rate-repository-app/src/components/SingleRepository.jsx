@@ -1,12 +1,12 @@
 // src/components/SingleRepository.jsx
-import { useParams } from 'react-router-native';
-import { useQuery } from '@apollo/client';
-import { FlatList, View, StyleSheet } from 'react-native';
-import { GET_REPOSITORY } from '../graphql/queries';
-import RepositoryItem from './RepositoryItem';
-import ReviewItem from './ReviewItem';
-import Text from './Text';
-import theme from '../theme';
+import { useParams } from "react-router-native";
+import { useQuery } from "@apollo/client";
+import { FlatList, View, StyleSheet } from "react-native";
+import { GET_REPOSITORY } from "../graphql/queries";
+import RepositoryItem from "./RepositoryItem";
+import ReviewItem from "./ReviewItem";
+import Text from "./Text";
+import theme from "../theme";
 
 const styles = StyleSheet.create({
   separator: {
@@ -20,8 +20,8 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const SingleRepository = () => {
   const { id } = useParams();
   const { data, loading } = useQuery(GET_REPOSITORY, {
-    variables: { id },
-    fetchPolicy: 'cache-and-network',
+    variables: { repositoryId: id },
+    fetchPolicy: "cache-and-network",
   });
 
   if (loading || !data) {
@@ -33,6 +33,13 @@ const SingleRepository = () => {
   }
 
   const repository = data.repository;
+  if (!repository) {
+    return (
+      <View style={{ padding: 20 }}>
+        <Text>Repository not found.</Text>
+      </View>
+    );
+  }
   const reviews = repository.reviews
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];

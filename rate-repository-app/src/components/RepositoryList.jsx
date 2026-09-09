@@ -48,7 +48,7 @@ const RepositoryList = () => {
     <RepositoryListContainer
       repositories={repositories}
       onRepositoryPress={(repositoryId) =>
-        navigate(`/repositories/${repositoryId}`)
+        navigate(`/repository/${repositoryId}`)
       }
     />
   );
