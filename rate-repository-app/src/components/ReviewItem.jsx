@@ -1,5 +1,5 @@
 // src/components/ReviewItem.jsx
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import { format, parseISO } from "date-fns";
 import theme from "../theme";
 
@@ -40,9 +40,13 @@ const styles = StyleSheet.create({
   text: {
     color: theme.colors.textPrimary,
   },
+  actions: {
+    marginTop: 12,
+    gap: 8,
+  },
 });
 
-const ReviewItem = ({ review }) => {
+const ReviewItem = ({ review, onViewRepository, onDelete }) => {
   const formattedDate = format(parseISO(review.createdAt), "dd MMM yyyy");
 
   return (
@@ -57,6 +61,14 @@ const ReviewItem = ({ review }) => {
         <Text style={styles.username}>{review.user.username}</Text>
         <Text style={styles.date}>{formattedDate}</Text>
         <Text style={styles.text}>{review.text}</Text>
+        {(onViewRepository || onDelete) && (
+          <View style={styles.actions}>
+            {onViewRepository && (
+              <Button title="View repository" onPress={onViewRepository} />
+            )}
+            {onDelete && <Button title="Delete" onPress={onDelete} />}
+          </View>
+        )}
       </View>
     </View>
   );
