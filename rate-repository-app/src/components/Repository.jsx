@@ -1,8 +1,9 @@
-import { View, StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-native";
 
 import RepositoryItem from "./RepositoryItem";
+import ReviewItem from "./ReviewItem";
 import { GET_REPOSITORY } from "../graphql/queries";
 import theme from "../theme";
 
@@ -22,10 +23,18 @@ const Repository = () => {
     return null;
   }
 
+  const reviews = data.repository.reviews.edges.map((edge) => edge.node);
+
   return (
-    <View style={styles.container}>
-      <RepositoryItem item={data.repository} showGitHubButton />
-    </View>
+    <FlatList
+      style={styles.container}
+      data={reviews}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      keyExtractor={({ id }) => id}
+      ListHeaderComponent={
+        <RepositoryItem item={data.repository} showGitHubButton />
+      }
+    />
   );
 };
 
