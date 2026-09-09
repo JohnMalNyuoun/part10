@@ -20,6 +20,10 @@ export const seed = async (knex) => {
       ...createDateColumns(new Date(Date.now() - oneHour)),
     },
     {
+      ...createColumns('facebook', 'react'),
+      ...createDateColumns(new Date()),
+    },
+    {
       ...createColumns('async-library', 'react-async'),
       ...createDateColumns(new Date(Date.now() - 2 * oneHour)),
     },

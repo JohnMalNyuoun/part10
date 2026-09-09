@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_REPOSITORIES = gql`
   query GetRepositories {
@@ -7,6 +7,7 @@ export const GET_REPOSITORIES = gql`
         node {
           id
           fullName
+          url
           description
           language
           forksCount
@@ -16,6 +17,23 @@ export const GET_REPOSITORIES = gql`
           ownerAvatarUrl
         }
       }
+    }
+  }
+`;
+
+export const GET_REPOSITORY = gql`
+  query GetRepository($repositoryId: ID!) {
+    repository(id: $repositoryId) {
+      id
+      fullName
+      url
+      description
+      language
+      forksCount
+      stargazersCount
+      ratingAverage
+      reviewCount
+      ownerAvatarUrl
     }
   }
 `;

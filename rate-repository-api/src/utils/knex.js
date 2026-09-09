@@ -1,7 +1,7 @@
 import knex from 'knex';
 
-import knexfile from '../../knexfile.js';
+import { KNEX_CONFIG } from '../config.js';
 
-const db = knex(knexfile);
+const db = knex(KNEX_CONFIG);
 
 export default db;

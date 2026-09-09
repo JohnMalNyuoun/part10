@@ -1,9 +1,8 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 
 const createHttpLinkUri = () => {
-  // Use your LAN IP or localhost
-  return 'http://localhost:4000/graphql'; 
+  return process.env.EXPO_PUBLIC_APOLLO_URI || "http://localhost:4000/graphql";
 };
 
 const httpLink = createHttpLink({
@@ -17,7 +16,7 @@ const createApolloClient = (authStorage) => {
       return {
         headers: {
           ...headers,
-          authorization: accessToken ? `Bearer ${accessToken}` : '',
+          authorization: accessToken ? `Bearer ${accessToken}` : "",
         },
       };
     } catch (e) {
