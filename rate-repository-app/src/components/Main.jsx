@@ -5,6 +5,7 @@ import SingleRepository from "./SingleRepository";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import CreateReview from "./CreateReview";
+import MyReviews from "./MyReviews";
 import AppBar from "./AppBar";
 import { View } from "react-native";
 
@@ -18,6 +19,7 @@ const Main = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/create-review" element={<CreateReview />} />
+        <Route path="/my-reviews" element={<MyReviews />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </View>
