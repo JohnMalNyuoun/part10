@@ -1,6 +1,8 @@
-import React from "react";
-import { FlatList, View, StyleSheet, Pressable } from "react-native";
+// src/components/RepositoryList.jsx
+import React, { useState } from "react";
+import { FlatList, View, StyleSheet, Pressable, TextInput } from "react-native";
 import { useNavigate } from "react-router-native";
+import { useDebounce } from "use-debounce";
 import RepositoryItem from "./RepositoryItem";
 import Text from "./Text";
 import useRepositories from "../hooks/useRepositories";
@@ -14,9 +16,21 @@ const styles = StyleSheet.create({
   separator: {
     height: 10,
   },
+  searchContainer: {
+    padding: 15,
+    backgroundColor: "white",
+  },
+  searchInput: {
+    backgroundColor: "white",
+    padding: 12,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: "#d0d7de",
+  },
   sortContainer: {
     backgroundColor: "white",
-    padding: 15,
+    paddingHorizontal: 15,
+    paddingBottom: 15,
   },
   sortLabel: {
     fontWeight: "bold",
@@ -48,6 +62,8 @@ export const RepositoryListContainer = ({
   orderBy,
   orderDirection,
   onOrderChange,
+  searchKeyword,
+  setSearchKeyword,
 }) => {
   // Extract nodes from GraphQL edges structure safely
   const repositoryNodes = repositories
@@ -59,9 +75,17 @@ export const RepositoryListContainer = ({
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       ListHeaderComponent={
-        onOrderChange ? (
-          <View style={styles.sortContainer}>
-            <View>
+        <View>
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search repositories..."
+              value={searchKeyword}
+              onChangeText={setSearchKeyword}
+            />
+          </View>
+          {onOrderChange ? (
+            <View style={styles.sortContainer}>
               <Text style={styles.sortLabel}>Order repositories by</Text>
               {[
                 ["Latest repositories", "CREATED_AT", "DESC"],
@@ -95,8 +119,8 @@ export const RepositoryListContainer = ({
                 );
               })}
             </View>
-          </View>
-        ) : null
+          ) : null}
+        </View>
       }
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => {
@@ -115,11 +139,17 @@ export const RepositoryListContainer = ({
 };
 
 const RepositoryList = () => {
-  const [order, setOrder] = React.useState({
+  const [order, setOrder] = useState({
     orderBy: "CREATED_AT",
     orderDirection: "DESC",
   });
-  const { repositories } = useRepositories(order);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
+
+  const { repositories } = useRepositories({
+    ...order,
+    searchKeyword: debouncedSearchKeyword,
+  });
   const navigate = useNavigate();
 
   return (
@@ -128,6 +158,8 @@ const RepositoryList = () => {
       orderBy={order.orderBy}
       orderDirection={order.orderDirection}
       onOrderChange={setOrder}
+      searchKeyword={searchKeyword}
+      setSearchKeyword={setSearchKeyword}
       onRepositoryPress={(repositoryId) =>
         navigate(`/repository/${repositoryId}`)
       }
